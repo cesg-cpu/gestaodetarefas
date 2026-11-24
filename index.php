@@ -1,5 +1,14 @@
 <?php
+session_start();
+
+// 1. SE NÃO ESTIVER LOGADO, MANDA PARA O LOGIN
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require 'conexao.php';
+$usuario_id = $_SESSION['usuario_id']; // Pega o ID do usuário logado
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,19 +21,22 @@ require 'conexao.php';
 </head>
 
 <body>
-
+    
     <!-- Cabecalho -->
     <header class="cabecalho-principal">
-    <div class="container-cabecalho">
-        <div class="cabecalho-logo">
-            <span class="icone-logo"><img src="assets/img/logogdt.jpg" alt="Logo Gestor GC"></span>
-            <span>Gestor GC</span>
+        <div class="container-cabecalho">
+            <div class="cabecalho-logo">
+                <span class="icone-logo"><img src="assets/img/logogdt.jpg" alt="Logo Gestor GC"></span>
+                <span>Gestor GC</span>
+            </div>
+            <div class="acoes-cabecalho">
+                <!-- Mostra o nome do usuário e o botão de Sair -->
+                <span style="font-size: 0.9rem; margin-right: 15px;">Olá, <strong><?= htmlspecialchars($_SESSION['usuario_nome']); ?></strong></span>
+                <a href="criar_lista.php" class="btn-primario">+ Criar nova lista</a>
+                <a href="logout.php" class="btn-secundario" style="margin-left: 10px;">Sair</a>
+            </div>
         </div>
-        <div class="acoes-cabecalho">
-            <a href="criar_lista.php" class="btn-primario">+ Criar nova lista</a>
-        </div>
-    </div>
-</header>
+    </header>
 
     <main class="container">
 
@@ -39,15 +51,18 @@ require 'conexao.php';
                 <div class="pilula pilula-resumo">
                     <?php
                     if (R::testConnection()) {
-                        $totalListas = R::count('lista');
-                        $totalPendentes = R::count('tarefa', ' status = ? ', ['pendente']);
+                        // Filtra a contagem apenas para este usuário
+                        $totalListas = R::count('lista', ' usuario_id = ? ', [$usuario_id]);
+
+                        // Conta tarefas pendentes das listas deste usuário
+                        $totalPendentes = R::count('tarefa', ' status = ? AND lista_id IN (SELECT id FROM lista WHERE usuario_id = ?) ', ['pendente', $usuario_id]);
 
                         echo "<span>{$totalListas} listas</span>";
                         echo "<span>·</span>";
                         echo "<span>{$totalPendentes} tarefas pendentes</span>";
                     }
                     ?>
-                </div>      
+                </div>
             </div>
         </section>
 
@@ -82,7 +97,8 @@ require 'conexao.php';
 
                 <?php
                 if (R::testConnection()) {
-                    $listas = R::findAll('lista');
+                    // FILTRA AS LISTAS APENAS DO USUÁRIO LOGADO
+                    $listas = R::find('lista', ' usuario_id = ? ', [$usuario_id]);
 
                     foreach ($listas as $lista) {
                         $tarefas = R::find('tarefa', ' lista_id = ? ', [$lista->id]);

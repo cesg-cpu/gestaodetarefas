@@ -45,7 +45,7 @@ a {
 }
 
 .container-cabecalho {
-    max-width: 100%; 
+    max-width: 100%;
     margin: 0 auto;
     padding: 1rem 2rem;
     display: flex;
@@ -63,8 +63,8 @@ a {
 }
 
 .icone-logo img {
-    width: 40px;         
-    height: 40px;     
+    width: 40px;
+    height: 40px;
 }
 
 .acoes-cabecalho {
@@ -212,7 +212,7 @@ a {
 }
 
 .btn-filtro {
-    border-radius: 20px; 
+    border-radius: 20px;
     padding: 8px 16px;
     text-decoration: none;
     color: #555;
@@ -266,10 +266,8 @@ a {
 
 .grid-cartoes {
     display: grid;
-    grid-template-columns: repeat(
-        auto-fill,
-        minmax(280px, 1fr)
-    );
+    grid-template-columns: repeat(auto-fill,
+            minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
@@ -493,6 +491,53 @@ a {
 
 .rodape-principal strong {
     color: var(--verde-primario);
+}
+
+.tela-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.tela-login .container-centralizado {
+    width: 100%;   /* sem isso, o card encolhe ao tamanho do conteúdo */
+    margin: 0 auto;
+}
+
+.link-secundario {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--verde-primario);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.link-secundario:hover {
+    text-decoration: underline;
+}
+
+.msg-erro {
+    color: #e53e3e;
+    background-color: #fff5f5;
+    border: 1px solid #fed7d7;
+    border-radius: 6px;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.msg-sucesso {
+    color: var(--verde-hover);
+    background-color: var(--verde-claro);
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 

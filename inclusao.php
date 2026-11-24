@@ -1,21 +1,18 @@
 <?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) { header('Location: login.php'); exit; }
 require 'conexao.php';
 
-if (R::testConnection()) { 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nova_tarefa'])) {
-        $descricao = $_POST['nova_tarefa'];
-        $id_lista = $_POST['id_lista'];
-        
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nova_tarefa'])) {
+    $lista = R::load('lista', (int)$_POST['id_lista']);
+
+    if ($lista->id && $lista->usuario_id == $_SESSION['usuario_id']) {
         $tarefa = R::dispense('tarefa');
-        $tarefa->descricao = $descricao; 
+        $tarefa->descricao = trim($_POST['nova_tarefa']);
         $tarefa->status = 'pendente';
-        $tarefa->lista_id = $id_lista;
-        
-        R::store($tarefa); 
-        
-        header("Location: index.php");
-        exit;
+        $tarefa->lista_id = $lista->id;
+        R::store($tarefa);
     }
-} else {
-    echo ('<h2>Não conectado...</h2>');
 }
+header('Location: index.php');
+exit;
