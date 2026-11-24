@@ -67,11 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
            <button type="submit" class="btn-primario" style="width: 100%; margin-top: 1rem;">Entrar</button>
-    </form> <!-- FECHA O FORMULÁRIO AQUI -->
+    </form> 
 
-    <!-- O LINK FICA LOGO ABAIXO -->
     <a href="cadastro.php" class="link-secundario">Não tem cadastro? Cadastre-se</a>
-</div> <!-- Fecha a caixa-formulario -->
+</div> 
     </main>
 
 </body>
